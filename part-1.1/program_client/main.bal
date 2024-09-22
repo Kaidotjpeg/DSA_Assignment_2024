@@ -17,7 +17,10 @@ function showMenu(Client apiClient) {
         io:println("2. Add Program");
         io:println("3. Get Program by Program Code");
         io:println("4. Update Program by Program Code");
+        io:println("5. Delete Program by Program Code");
+        io:println("6. List Programs by NQF Qualification");
         io:println("7. List Courses");
+        io:println("8. Add Course");
         io:println("12. Exit");
 
         string number = io:readln("Enter your choice: ");
@@ -38,9 +41,18 @@ function showMenu(Client apiClient) {
         4 => {
             updateProgramByprogramCode(apiClient);
         }
+        5 => {
+            deleteProgramByprogramCode(apiClient);
+        }
+        6 => {
+            listProgramBynqfQual(apiClient);
+        }
         // Use `|` to match more than one value.
         7 => {
             listCourses(apiClient);
+        }
+        8 => {
+            addCourse(apiClient);
         }
     }
     }
@@ -244,6 +256,46 @@ function updateProgramByprogramCode(Client apiClient){
     }
     }
 }
+function deleteProgramByprogramCode(Client apiClient){
+    string programCode = io:readln("Enter Program Code: ");
+
+    var result = apiClient->/["Programs"]/[programCode].delete;
+    
+    if result is Program {
+        io:println("Program Successfully Deleted");
+    }
+    else {
+        io:println("Error Message" + result.message());
+    }
+}
+function listProgramBynqfQual(Client apiClient){
+    string nqfQual = io:readln("Enter NQF Level: ");
+
+    var result = apiClient->/["Programs"]/["NQF"]/[nqfQual];
+
+    if result is Program[] {
+        foreach var Program in result {           
+            io:println("Program Details");
+            io:println("-----------------------------------------------------");
+            io:println("Program Code: "+Program.programCode);
+            io:println("Program Title: "+Program.programTitle);
+            io:println("Faculty and Department: "+Program.facultyAndDeptName);
+            io:println("NQF Level: "+Program.nqfQual);
+            io:println("Registration Date: "+Program.registrationDate);
+            io:println("Courses: ");
+            io:println("-----------------------------------------------------");
+
+                foreach var course in Program.courses {
+                io:println("Course Code: "+course.courseCode);
+                io:println("Course Name: "+course.courseName);
+                io:println("NQF Level: "+course.nqfLevel);
+            }
+        }       
+    }
+    else {
+        io:println("Error Message: " + result.message());
+    }
+}
 
 function listCourses(Client apiClient){
     var result = apiClient->/["courses"];
@@ -260,6 +312,25 @@ function listCourses(Client apiClient){
     }
     else {
         io:println("Error message: " + result.message());
+    }
+}
+function addCourse(Client apiClient){
+    string courseCode = io:readln("Enter Course Code: ");
+    string courseName = io:readln("Enter Course Name: ");
+    string nqfLevel = io:readln("Enter NQF Level: ");
+
+    Course newCourse = {courseName: "", courseCode: "", nqfLevel: ""};
+    newCourse.courseCode = courseCode;
+    newCourse.courseName = courseName;
+    newCourse.nqfLevel = nqfLevel;
+
+    var result = apiClient->/["courses"].post(newCourse);
+    
+    if(result is http:Response){
+        io:println(result.statusCode);
+        io:println("Program succesfully added.");
+    }else{
+        io:println("Error Message" + result.message());
     }
 }
 

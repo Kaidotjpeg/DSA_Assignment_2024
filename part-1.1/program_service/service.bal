@@ -97,7 +97,22 @@ service / on new http:Listener(8080) {
             }
         };
     }
-
+# + return - Delete a Programs record by their Program code
+    resource function delete Programs/[string programCode]() returns Program|ValidationError {
+        if (ProgramsTable.hasKey(programCode)) {
+            Program removed = ProgramsTable.remove(programCode);
+            return removed;
+        } else {
+            return <ValidationError>{
+                body: {
+                    'error: {
+                        code: "Program_NOT_FOUND",
+                        message: "Program not found"
+                    }
+                }
+            };
+        }
+    }
     # + return - Retrieve a list of all Programs
     resource function get Programs() returns Program[] {
         return ProgramsTable.toArray();
@@ -118,6 +133,37 @@ service / on new http:Listener(8080) {
                 }
             };
         }
+    }
+    # + return - Retrieve all the Programs that have the same NQF Level
+    resource function get Programs/office/[string nqfQual]() returns Program[] {
+        Program[] ProgramsInOffice = [];
+        foreach var Program in ProgramsTable {
+            if (Program.nqfQual == nqfQual) {
+                ProgramsInOffice.push(Program);
+            }
+        }
+        return ProgramsInOffice;
+    }
+    # + return - Add a new course
+    resource function post courses(@http:Payload Course course) returns ResourceCreated|ValidationError {
+        if (!isValidNewCourse(course)) {
+            return <ValidationError>{
+                body: {
+                    'error: {
+                        code: "INVALID_DATA",
+                        message: "Invalid course data"
+                    }
+                }
+            };
+        }
+
+        _= courseTable.add(course);
+        string courseUrl = string `/courses/${course.courseCode}`;
+        return <ResourceCreated>{
+            headers: {
+                location: courseUrl
+            }
+        };
     }
 
     # + return - Update an existing Program information
@@ -173,3 +219,11 @@ function isValidProgram(Program Program)  returns boolean {
     return true; 
 }
 
+function isValidNewCourse(Course course) returns boolean {
+    // Check if the courseCode is unique
+    if(courseTable.hasKey(course.courseCode)){
+        return false;
+    }
+
+    return true; 
+}

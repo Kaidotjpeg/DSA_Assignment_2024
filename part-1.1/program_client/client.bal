@@ -78,9 +78,44 @@ public isolated client class Client {
     # 
     #
     # + return - Ok 
+    resource isolated function get Programs/NQF/[string nqfLevel]() returns Program[]|error {
+        string resourcePath = string `/Programs/NQF/${getEncodedUri(nqfLevel)}`;
+        Program[] response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # 
+    #
+    # + return - Ok 
     resource isolated function get courses() returns Course[]|error {
         string resourcePath = string `/courses`;
         Course[] response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # 
+    #
+    # + return - Created 
+    resource isolated function post courses(Course payload) returns http:Response|error {
+        string resourcePath = string `/courses`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
+        return response;
+    }
+    # 
+    #
+    # + return - Ok 
+    resource isolated function delete courses/[string courseCode]() returns Course|error {
+        string resourcePath = string `/courses/${getEncodedUri(courseCode)}`;
+        Course response = check self.clientEp-> delete(resourcePath);
+        return response;
+    }
+    # 
+    #
+    # + return - Ok 
+    resource isolated function delete Programs/[string progCode]() returns Program|error {
+        string resourcePath = string `/Programs/${getEncodedUri(progCode)}`;
+        Program response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }
