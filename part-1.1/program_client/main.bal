@@ -21,6 +21,9 @@ function showMenu(Client apiClient) {
         io:println("6. List Programs by NQF Qualification");
         io:println("7. List Courses");
         io:println("8. Add Course");
+        io:println("9. Get Course by Course Code");
+        io:println("10. Update Course by Course Code");
+        io:println("11. Delete Course by Course Code");
         io:println("12. Exit");
 
         string number = io:readln("Enter your choice: ");
@@ -53,6 +56,15 @@ function showMenu(Client apiClient) {
         }
         8 => {
             addCourse(apiClient);
+        }
+        9 => {
+            getCourseByCourseCode(apiClient);
+        }
+        10 => {
+            updateCourseByCourseCode(apiClient);
+        }
+        11 => {
+            deleteCourseByCourseCode(apiClient);
         }
     }
     }
@@ -330,6 +342,54 @@ function addCourse(Client apiClient){
         io:println(result.statusCode);
         io:println("Program succesfully added.");
     }else{
+        io:println("Error Message" + result.message());
+    }
+}
+function getCourseByCourseCode(Client apiClient){
+    string courseCode = io:readln("Enter Course Code: ");
+
+    var result = apiClient->/["courses"]/[courseCode];
+
+    if result is Course {
+        io:println("Course Code: "+result.courseCode);
+        io:println("Course Name: "+result.courseName);
+        io:println("NQF Level: "+result.nqfLevel);
+    }
+    else {
+        io:println("Error Message" + result.message());
+    }
+}
+
+function updateCourseByCourseCode(Client apiClient){
+
+    string courseCode = io:readln("Enter Course Code: ");
+    string updatedCourseName = io:readln("Enter Course Name:");
+    string nqfLevel = io:readln("Enter NQF Level: ");
+
+    Course updatedCourse = {courseName: "", courseCode: "", nqfLevel: ""};
+    updatedCourse.courseCode = courseCode;
+    updatedCourse.courseName = updatedCourseName;
+    updatedCourse.nqfLevel = nqfLevel;
+
+    var result = apiClient->/["courses"]/[courseCode].put(updatedCourse);
+    
+    if(result is error){
+        io:println("Error Message: " +result.message());
+    }
+    else {
+        io:println("Course Details Updated Successfully.");
+    }
+}
+
+function deleteCourseByCourseCode(Client apiClient){
+    string courseCode = io:readln("Enter Course Code: ");
+
+    var result = apiClient->/["courses"]/[courseCode].delete;
+
+    if result is Course {
+        io:println("Course Deleted Succesfully");
+    }
+    else {
         io:println("Error Message" + result.message());
     }
 }

@@ -105,6 +105,25 @@ public isolated client class Client {
     # 
     #
     # + return - Ok 
+    resource isolated function get courses/[string courseCode]() returns Course|error {
+        string resourcePath = string `/courses/${getEncodedUri(courseCode)}`;
+        Course response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # 
+    #
+    # + return - Ok 
+    resource isolated function put courses/[string courseCode](Course payload) returns http:Response|error {
+        string resourcePath = string `/courses/${getEncodedUri(courseCode)}`;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
+        return response;
+    }
+    # 
+    #
+    # + return - Ok 
     resource isolated function delete courses/[string courseCode]() returns Course|error {
         string resourcePath = string `/courses/${getEncodedUri(courseCode)}`;
         Course response = check self.clientEp-> delete(resourcePath);

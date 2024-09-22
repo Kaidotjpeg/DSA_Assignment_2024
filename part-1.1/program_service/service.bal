@@ -165,6 +165,27 @@ service / on new http:Listener(8080) {
             }
         };
     }
+    # + return - Retrieve a list of all courses
+    resource function get courses() returns Course[] {
+        return courseTable.toArray();
+        }
+
+    # + return - Retrieve the details of a specific course by its course code
+    resource function get courses/[string courseCode]() returns Course?|ValidationError {
+        if (courseTable.hasKey(courseCode)) {
+            Course requestedCourse = courseTable.get(courseCode);
+            return requestedCourse;
+        } else {
+            return <ValidationError>{
+                body: {
+                    'error: {
+                        code: "COURSE_NOT_FOUND",
+                        message: "Course not found"
+                    }
+                }
+            };
+        }
+    }
 
     # + return - Update an existing Program information
     resource function put Programs/[string programCode](@http:Payload Program Program) returns ResourceUpdated|ValidationError {
@@ -195,6 +216,22 @@ service / on new http:Listener(8080) {
         ProgramsTable.put(Program);
         
         return <ResourceUpdated>{};
+    }
+    # + return - Delete a course by its course code
+    resource function delete courses/[string courseCode]() returns Course|ValidationError {
+        if (courseTable.hasKey(courseCode)) {
+            Course removed = courseTable.remove(courseCode);
+            return removed;
+        } else {
+            return <ValidationError>{
+                body: {
+                    'error: {
+                        code: "COURSE_NOT_FOUND",
+                        message: "Course not found"
+                    }
+                }
+            };
+        }
     }
 }
 
