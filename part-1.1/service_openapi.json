@@ -1,0 +1,453 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Service Openapi Json",
+    "version" : "0.1.0"
+  },
+  "servers" : [ {
+    "url" : "{server}:{port}/",
+    "variables" : {
+      "server" : {
+        "default" : "http://localhost"
+      },
+      "port" : {
+        "default" : "8080"
+      }
+    }
+  } ],
+  "paths" : {
+    "/lecturers" : {
+      "get" : {
+        "summary" : "",
+        "operationId" : "getLecturers",
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Lecturer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "",
+        "operationId" : "postLecturers",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Lecturer"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "headers" : {
+              "location" : {
+                "description" : "Location header. A link to the created resource.",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "BadRequest",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lecturers/{staffNumber}" : {
+      "get" : {
+        "summary" : "",
+        "operationId" : "getLecturersStaffnumber",
+        "parameters" : [ {
+          "name" : "staffNumber",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Lecturer"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "BadRequest",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "",
+        "operationId" : "putLecturersStaffnumber",
+        "parameters" : [ {
+          "name" : "staffNumber",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Lecturer"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Ok"
+          },
+          "400" : {
+            "description" : "BadRequest",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "",
+        "operationId" : "deleteLecturersStaffnumber",
+        "parameters" : [ {
+          "name" : "staffNumber",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Lecturer"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "BadRequest",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lecturers/office/{officeNumber}" : {
+      "get" : {
+        "summary" : "",
+        "operationId" : "getLecturersOfficeOfficenumber",
+        "parameters" : [ {
+          "name" : "officeNumber",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Lecturer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses" : {
+      "get" : {
+        "summary" : "",
+        "operationId" : "getCourses",
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Course"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "",
+        "operationId" : "postCourses",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Course"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "headers" : {
+              "location" : {
+                "description" : "Location header. A link to the created resource.",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "BadRequest",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses/{courseCode}" : {
+      "get" : {
+        "summary" : "",
+        "operationId" : "getCoursesCoursecode",
+        "parameters" : [ {
+          "name" : "courseCode",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Course"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "BadRequest",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "",
+        "operationId" : "putCoursesCoursecode",
+        "parameters" : [ {
+          "name" : "courseCode",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Course"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Ok"
+          },
+          "400" : {
+            "description" : "BadRequest",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "",
+        "operationId" : "deleteCoursesCoursecode",
+        "parameters" : [ {
+          "name" : "courseCode",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Course"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "BadRequest",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Error" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "Error code"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "Error message"
+          }
+        },
+        "description" : "Represents an error"
+      },
+      "Course" : {
+        "required" : [ "courseCode", "courseName", "nqfLevel" ],
+        "type" : "object",
+        "properties" : {
+          "courseCode" : {
+            "type" : "string",
+            "description" : "Course Code (Unique identifier)"
+          },
+          "courseName" : {
+            "type" : "string",
+            "description" : "Course Name"
+          },
+          "nqfLevel" : {
+            "type" : "string",
+            "description" : "NQF Level"
+          }
+        },
+        "description" : "Represents a course"
+      },
+      "Lecturer" : {
+        "required" : [ "courses", "officeNumber", "staffName", "staffNumber", "title" ],
+        "type" : "object",
+        "properties" : {
+          "staffNumber" : {
+            "type" : "string",
+            "description" : "Staff Number (Unique identifier)"
+          },
+          "officeNumber" : {
+            "type" : "string",
+            "description" : "Office Number"
+          },
+          "staffName" : {
+            "type" : "string",
+            "description" : "Staff Name"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "Title"
+          },
+          "courses" : {
+            "type" : "array",
+            "description" : "List of Courses",
+            "items" : {
+              "$ref" : "#/components/schemas/Course"
+            }
+          }
+        },
+        "description" : "Represents a lecturer"
+      },
+      "ErrorResponse" : {
+        "required" : [ "error" ],
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "$ref" : "#/components/schemas/Error"
+          }
+        },
+        "description" : "Error response"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+[package]
+org = "knux8_ij392ok"
+name = "program_client"
+version = "0.1.0"
+distribution = "2201.7.0"
+
+[build-options]
+observabilityIncluded = true
